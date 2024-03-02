@@ -1,6 +1,7 @@
 package my.pet.app.bank_statement_analyzer.processor;
 
 import my.pet.app.bank_statement_analyzer.model.BankTransaction;
+import my.pet.app.bank_statement_analyzer.model.Summary;
 
 import java.time.Month;
 import java.util.List;
@@ -18,24 +19,27 @@ public class BankStatementProcessor {
         this.transactions = transactions;
     }
 
-    public double getTotalAmount() {
-        return transactions.stream()
+    public Summary getTotalAmount() {
+        var amount = transactions.stream()
                 .mapToDouble(BankTransaction::amount)
                 .sum();
+        return new Summary(amount);
     }
 
-    public double getTotalByMonth(final Month month) {
-        return transactions.stream()
+    public Summary getTotalByMonth(final Month month) {
+        var amount = transactions.stream()
                 .filter(it -> it.date().getMonth() == month)
                 .mapToDouble(BankTransaction::amount)
                 .sum();
+        return new Summary(amount);
     }
 
-    public double getTotalByCategory(final String category) {
-        return transactions.stream()
+    public Summary getTotalByCategory(final String category) {
+        var amount = transactions.stream()
                 .filter(it -> it.category().equalsIgnoreCase(category))
                 .mapToDouble(BankTransaction::amount)
                 .sum();
+        return new Summary(amount);
     }
 
     public BankTransaction getMaxExpenseAmount() {

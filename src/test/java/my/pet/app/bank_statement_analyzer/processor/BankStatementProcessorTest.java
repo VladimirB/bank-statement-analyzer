@@ -1,6 +1,7 @@
 package my.pet.app.bank_statement_analyzer.processor;
 
 import my.pet.app.bank_statement_analyzer.model.BankTransaction;
+import my.pet.app.bank_statement_analyzer.model.Summary;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -21,21 +22,21 @@ class BankStatementProcessorTest {
     public void shouldCalculateTotalAmountCorrect() {
         var total = processor.getTotalAmount();
 
-        Assertions.assertEquals(1200, total);
+        Assertions.assertEquals(new Summary(1200), total);
     }
 
     @Test
     public void shouldCalculateTotalByMonthCorrect() {
         var totalByMonth = processor.getTotalByMonth(Month.JANUARY);
 
-        Assertions.assertEquals(-800, totalByMonth);
+        Assertions.assertEquals(new Summary(-800), totalByMonth);
     }
 
     @Test
     public void shouldCalculateTotalByCategoryCorrect() {
         var totalByCategory = processor.getTotalByCategory("salary");
 
-        Assertions.assertEquals(2200, totalByCategory);
+        Assertions.assertEquals(new Summary(2200), totalByCategory);
     }
 
     @Test
