@@ -5,6 +5,7 @@ import my.pet.app.bank_statement_analyzer.model.BankTransaction;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Производит расчет различной информации по банковским транзакциям
@@ -59,20 +60,10 @@ public class BankStatementProcessor {
         return result;
     }
 
-    public List<BankTransaction> findGreaterThanAmount(final double amount) {
+    public List<BankTransaction> findTransactions(final Predicate<BankTransaction> predicate) {
         final List<BankTransaction> result = new ArrayList<>();
         for (final BankTransaction transaction : transactions) {
-            if (transaction.amount() > amount) {
-                result.add(transaction);
-            }
-        }
-        return result;
-    }
-
-    public List<BankTransaction> findInMonth(final Month month) {
-        final List<BankTransaction> result = new ArrayList<>();
-        for (final BankTransaction transaction : transactions) {
-            if (transaction.date().getMonth() == month) {
+            if (predicate.test(transaction)) {
                 result.add(transaction);
             }
         }
