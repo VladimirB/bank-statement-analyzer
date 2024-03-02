@@ -1,7 +1,7 @@
 package my.pet.app.bank_statement_analyzer.analyzer;
 
 import my.pet.app.bank_statement_analyzer.model.BankTransaction;
-import my.pet.app.bank_statement_analyzer.parser.BankStatementCSVParser;
+import my.pet.app.bank_statement_analyzer.parser.BankStatementParser;
 import my.pet.app.bank_statement_analyzer.processor.BankStatementProcessor;
 
 import java.io.IOException;
@@ -18,11 +18,10 @@ public class BankStatementAnalyzer {
 
     private static final String RESOURCES = "src/main/resources/";
 
-    public void analyze(final String fileName) throws IOException {
+    public void analyze(final String fileName, final BankStatementParser parser) throws IOException {
         final Path path = Paths.get(RESOURCES + fileName);
         final List<String> lines = Files.readAllLines(path);
 
-        final BankStatementCSVParser parser = new BankStatementCSVParser();
         final List<BankTransaction> transactions = parser.parseLines(lines);
 
         final BankStatementProcessor processor = new BankStatementProcessor(transactions);
