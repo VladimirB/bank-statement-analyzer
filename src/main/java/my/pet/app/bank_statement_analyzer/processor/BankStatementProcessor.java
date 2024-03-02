@@ -3,9 +3,9 @@ package my.pet.app.bank_statement_analyzer.processor;
 import my.pet.app.bank_statement_analyzer.model.BankTransaction;
 
 import java.time.Month;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Производит расчет различной информации по банковским транзакциям
@@ -19,31 +19,23 @@ public class BankStatementProcessor {
     }
 
     public double getTotalAmount() {
-        double total = 0;
-        for (final BankTransaction transaction : transactions) {
-            total += transaction.amount();
-        }
-        return total;
+        return transactions.stream()
+                .mapToDouble(BankTransaction::amount)
+                .sum();
     }
 
     public double getTotalByMonth(final Month month) {
-        double total = 0;
-        for (final BankTransaction transaction : transactions) {
-            if (transaction.date().getMonth() == month) {
-                total += transaction.amount();
-            }
-        }
-        return total;
+        return transactions.stream()
+                .filter(it -> it.date().getMonth() == month)
+                .mapToDouble(BankTransaction::amount)
+                .sum();
     }
 
     public double getTotalByCategory(final String category) {
-        double total = 0;
-        for (final BankTransaction transaction : transactions) {
-            if (transaction.category().equalsIgnoreCase(category)) {
-                total += transaction.amount();
-            }
-        }
-        return total;
+        return transactions.stream()
+                .filter(it -> it.category().equalsIgnoreCase(category))
+                .mapToDouble(BankTransaction::amount)
+                .sum();
     }
 
     public BankTransaction getMaxExpenseAmount() {
@@ -61,12 +53,8 @@ public class BankStatementProcessor {
     }
 
     public List<BankTransaction> findTransactions(final Predicate<BankTransaction> predicate) {
-        final List<BankTransaction> result = new ArrayList<>();
-        for (final BankTransaction transaction : transactions) {
-            if (predicate.test(transaction)) {
-                result.add(transaction);
-            }
-        }
-        return result;
+        return transactions.stream()
+                .filter(predicate)
+                .collect(Collectors.toList());
     }
 }
