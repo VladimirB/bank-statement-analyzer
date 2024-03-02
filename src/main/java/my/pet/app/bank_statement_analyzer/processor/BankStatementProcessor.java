@@ -43,4 +43,18 @@ public class BankStatementProcessor {
         }
         return total;
     }
+
+    public BankTransaction getMaxExpenseAmount() {
+        BankTransaction result = null;
+        for (final BankTransaction transaction : transactions) {
+            if (result == null) {
+                result = transaction;
+            }
+
+            if (result.amount() > transaction.amount()) {
+                result = transaction;
+            }
+        }
+        return result;
+    }
 }
