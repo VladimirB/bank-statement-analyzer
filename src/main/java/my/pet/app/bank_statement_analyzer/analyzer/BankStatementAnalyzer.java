@@ -30,5 +30,6 @@ public class BankStatementAnalyzer {
         System.out.println("The total amount for February: " + processor.getTotalByMonth(Month.FEBRUARY));
         System.out.println("The total amount for 'Salary': " + processor.getTotalByCategory("salary"));
         System.out.println("The max expense transaction': " + processor.getMaxExpenseAmount());
+        
     }
 }
