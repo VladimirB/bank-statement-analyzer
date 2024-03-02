@@ -3,6 +3,7 @@ package my.pet.app.bank_statement_analyzer.processor;
 import my.pet.app.bank_statement_analyzer.model.BankTransaction;
 
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,6 +54,26 @@ public class BankStatementProcessor {
 
             if (result.amount() > transaction.amount()) {
                 result = transaction;
+            }
+        }
+        return result;
+    }
+
+    public List<BankTransaction> findGreaterThanAmount(final double amount) {
+        final List<BankTransaction> result = new ArrayList<>();
+        for (final BankTransaction transaction : transactions) {
+            if (transaction.amount() > amount) {
+                result.add(transaction);
+            }
+        }
+        return result;
+    }
+
+    public List<BankTransaction> findInMonth(final Month month) {
+        final List<BankTransaction> result = new ArrayList<>();
+        for (final BankTransaction transaction : transactions) {
+            if (transaction.date().getMonth() == month) {
+                result.add(transaction);
             }
         }
         return result;
