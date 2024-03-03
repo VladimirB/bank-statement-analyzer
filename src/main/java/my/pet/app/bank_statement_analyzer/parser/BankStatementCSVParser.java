@@ -1,6 +1,9 @@
 package my.pet.app.bank_statement_analyzer.parser;
 
 import my.pet.app.bank_statement_analyzer.model.BankTransaction;
+import my.pet.app.bank_statement_analyzer.model.Notification;
+import my.pet.app.bank_statement_analyzer.validator.BankStatementValidator;
+import my.pet.app.bank_statement_analyzer.validator.Validator;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -25,10 +28,18 @@ public class BankStatementCSVParser implements BankStatementParser {
     public BankTransaction parseLine(final String line) {
         String[] columns = line.split(",");
 
-        LocalDate date = LocalDate.parse(columns[0], DATE_PATTERN);
-        double amount = Double.parseDouble(columns[1]);
-        String category = columns[2];
+        final Validator validator = new BankStatementValidator(columns[0], columns[1], columns[2]);
+        final Notification notification = validator.validate();
 
-        return new BankTransaction(date, amount, category);
+        if (!notification.hasErrors()) {
+            LocalDate date = LocalDate.parse(columns[0], DATE_PATTERN);
+            double amount = Double.parseDouble(columns[1]);
+            String category = columns[2];
+            return new BankTransaction(date, amount, category);
+        } else {
+            System.out.println(notification);
+        }
+
+        return null;
     }
 }
